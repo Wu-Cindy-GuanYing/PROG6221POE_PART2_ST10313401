@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Media;
 using System.Threading;
 using System.IO;
@@ -34,7 +34,10 @@ namespace ChatBot_Cybersecurity
             "Make sure to use strong, unique passwords for each account. Avoid using personal details in your passwords.",
             "A good password should be long (12+ characters) and include a mix of letters, numbers, and symbols.",
             "Consider using a passphrase like 'BlueCoffee$Makes5Cups!' instead of a simple password.",
-            "Never share your passwords with anyone, even if they claim to be from tech support."
+            "Never share your passwords with anyone, even if they claim to be from tech support.",
+            "Prevent using your name, surname, adress or birthdays in the passwords as they can be easily guessed and encrypted.",
+            "Avoid using the same password for different accounts. Try creating unique passords for each platform you use.",
+
         };
 
         private static List<string> phishingResponses = new List<string>
@@ -42,7 +45,9 @@ namespace ChatBot_Cybersecurity
             "Be cautious of emails asking for personal information. Scammers often disguise themselves as trusted organisations.",
             "Always check the sender's email address - phishing emails often come from addresses that look similar but not identical to legitimate ones.",
             "If an email creates a sense of urgency or threatens consequences, it's likely a phishing attempt.",
-            "Hover over links before clicking to see the actual URL. If it looks suspicious, don't click!"
+            "Hover over links before clicking to see the actual URL. If it looks suspicious, don't click!",
+            "Make sure you verify the sender's identity. Scammers may pretend to be a legitimate being in order to manipulate their targets.",
+            "When possible, report suspicious links or entity to prevent having more phishing victims."
         };
 
         private static List<string> browsingResponses = new List<string>
@@ -50,9 +55,29 @@ namespace ChatBot_Cybersecurity
             "Always look for HTTPS and the padlock icon in your browser when entering sensitive information.",
             "Keep your browser and all plugins updated to protect against known vulnerabilities.",
             "Use browser extensions that block malicious websites and trackers for safer browsing.",
-            "Be especially careful when using public Wi-Fi - consider using a VPN for added security."
+            "Be especially careful when using public Wi-Fi - consider using a VPN for added security.",
+            "Regularly update your browser/web configurations. Keeping your device updated can help protect you from evolving cyber-threats"
         };
 
+        private static List<string> socialEngineeringResponses = new List<string>
+        {
+            "Social engineering is when attackers manipulate people into giving up confidential information.",
+            "Be wary of anyone asking for sensitive information, even if they seem authoritative.",
+            "Common social engineering tactics include pretexting, baiting, and quid pro quo offers.",
+            "Never feel pressured to provide information - legitimate organizations won't rush you.",
+            "Verify the identity of anyone requesting sensitive data, even if they claim to be from IT support.",
+            "Attackers often exploit human psychology rather than technical vulnerabilities."
+        };
+
+        private static List<string> malwareResponses = new List<string>
+        {
+            "Malware includes viruses, ransomware, spyware - any malicious software designed to harm.",
+            "Keep your antivirus software updated and run regular scans of your system.",
+            "Be very careful with email attachments and downloads from untrusted sources.",
+            "Ransomware can encrypt your files - maintain regular backups on separate devices.",
+            "Signs of malware infection include slow performance, pop-ups, and unexpected behavior.",
+            "Use application whitelisting to only allow approved programs to run on your devices."
+        };
         static void Main(string[] args)
         {
             Console.Title = "Cybersecurity Awareness Bot";
@@ -98,13 +123,13 @@ namespace ChatBot_Cybersecurity
                 if (isWorried && lowerInput.Contains("scam") || lowerInput.Contains("phishing"))
                 {
                     TypeWrite("It's totally understandable to feel that way. Scammers can be convinving for those unfamiliar with cybersecurity. Let me help you stay safe.", botColor);
-                                          
+
                 }
                 TypeWrite(lowerInput, botColor);
             }
             else if (lowerInput.Contains("how are you"))
             {
-                TypeWrite("I'm just a bot, but I'm working perfectly! Ready to help you with cybersecurity.", botColor);
+                TypeWrite("Though I'm just a bot, I'm working perfectly! Ready to help you with cybersecurity.", botColor);
             }
             else if (lowerInput.Contains("purpose") || lowerInput.Contains("what do you do"))
             {
@@ -133,6 +158,16 @@ namespace ChatBot_Cybersecurity
             else if (lowerInput.Contains("more") || lowerInput.Contains("detail") || lowerInput.Contains("explain"))
             {
                 ProvideMoreDetails();
+            }
+            else if (ContainsKeywords(lowerInput, new[] { "social engineering", "manipulation", "pretexting", "baiting" }))
+            {
+                userInterest = "social engineering";
+                DisplaySocialEngineeringInfo(input);
+            }
+            else if (ContainsKeywords(lowerInput, new[] { "malware", "virus", "ransomware", "spyware", "antivirus" }))
+            {
+                userInterest = "malware protection";
+                DisplayMalwareProtectionInfo(input);
             }
             else if (lowerInput.Contains("exit") || lowerInput.Contains("quit") || lowerInput.Contains("bye"))
             {
@@ -185,7 +220,7 @@ namespace ChatBot_Cybersecurity
                         input.Contains("upset") || input.Contains("disappointed");
 
             isFavourite = input.Contains("favourite") || input.Contains("like");
-                        
+
         }
 
         private static void CheckForFavoriteTopic(string input)
@@ -210,7 +245,7 @@ namespace ChatBot_Cybersecurity
                     TypeWrite($"I've noted that safe browsing is your favorite topic, {userName}!", positiveColor);
                 }
             }
-        } 
+        }
 
         private static void ProvideMoreDetails()
         {
@@ -253,6 +288,8 @@ namespace ChatBot_Cybersecurity
                 TypeWrite("- PASSWORD SAFETY (try 'tell me about passwords')", botColor);
                 TypeWrite("- PHISHING SCAMS (try 'how to spot scams')", botColor);
                 TypeWrite("- SAFE BROWSING PRACTICES (try 'internet safety tips')", botColor);
+                TypeWrite("- SOCIAL ENGINEERING (try 'about manipulation attacks')", botColor);
+                TypeWrite("- MALWARE PROTECTION (try 'virus protection tips')", botColor);
             }
         }
 
@@ -340,9 +377,9 @@ namespace ChatBot_Cybersecurity
                     TypeWrite("Always verify requests through official channels before responding.", botColor);
                     TypeWrite("When in doubt, don't click! Contact the organisation directly.", warningColor);
 
-                    
+
                 }
-            if (isCurious)
+                if (isCurious)
                 {
                     Console.ForegroundColor = botColor;
                     Console.WriteLine("\n" + new string('=', 38) + " PHISHING PROTECTION " + new string('=', 38) + "\n");
@@ -363,7 +400,7 @@ namespace ChatBot_Cybersecurity
                     TypeWrite("When in doubt, don't click! Contact the organisation directly.", warningColor);
 
                 }
-            if (isFavourite)
+                if (isFavourite)
                 {
                     TypeWrite("Great! I'll remember that this is your favourite topic!", botColor);
                 }
@@ -372,10 +409,10 @@ namespace ChatBot_Cybersecurity
                     Console.WriteLine("\n" + new string('=', 97) + "\n");
                     Console.ForegroundColor = defaultColor;
                 }
-                
+
             }
 
-            
+
         }
 
         private static void DisplaySafeBrowsingInfo(string input)
@@ -414,9 +451,9 @@ namespace ChatBot_Cybersecurity
                     Console.WriteLine("\n" + new string('-', 60));
                     TypeWrite("Remember: If something feels suspicious, it probably is!", warningColor);
 
-                    
+
                 }
-                else if(isFavourite)
+                else if (isFavourite)
                 {
                     TypeWrite("Great! I'll remember that this is your favourite topic!", botColor);
                 }
@@ -428,6 +465,129 @@ namespace ChatBot_Cybersecurity
                 }
             }
         }
+
+        private static void DisplaySocialEngineeringInfo(string input)
+        {
+            Console.ForegroundColor = botColor;
+            Console.WriteLine("\n" + new string('=', 35) + " SOCIAL ENGINEERING PROTECTION " + new string('=', 35) + "\n");
+            TypeWrite(GetRandomResponse(socialEngineeringResponses), botColor);
+
+            if (isWorried)
+            {
+                TypeWrite("It's good to be cautious, but don't let fear stop you from normal interactions!", positiveColor);
+                TypeWrite("Would you like more detailed information about social engineering?", botColor);
+
+                if (input.ToLower().Contains("yes"))
+                {
+                    Console.ForegroundColor = botColor;
+                    Console.WriteLine("\n" + new string('=', 35) + " SOCIAL ENGINEERING PROTECTION " + new string('=', 35) + "\n");
+
+                    TypeWrite("Social engineering attacks come in many forms:", botColor);
+                    Console.WriteLine();
+
+                    TypeWrite("1. PRETEXTING: Creating a fake scenario to obtain information", botColor);
+                    TypeWrite("2. BAITING: Offering something enticing to deliver malware", botColor);
+                    TypeWrite("3. QUID PRO QUO: Offering a service in exchange for information", botColor);
+                    TypeWrite("4. TAILGATING: Following someone into a restricted area", botColor);
+                    TypeWrite("5. PHISHING: Fraudulent communications pretending to be someone else", botColor);
+
+                    Console.WriteLine("\n" + new string('-', 60));
+                    TypeWrite("How to protect yourself:", botColor);
+                    TypeWrite("- Always verify identities before sharing information", botColor);
+                    TypeWrite("- Be suspicious of unsolicited requests for information", botColor);
+                    TypeWrite("- Don't let urgency or authority pressure you into acting", botColor);
+                    TypeWrite("- Educate yourself and others about these tactics", warningColor);
+                }
+            }
+
+            if (isCurious)
+            {
+                Console.ForegroundColor = botColor;
+                Console.WriteLine("\n" + new string('=', 35) + " SOCIAL ENGINEERING PROTECTION " + new string('=', 35) + "\n");
+
+                TypeWrite("Social engineering attacks exploit human psychology rather than technical vulnerabilities.", botColor);
+                Console.WriteLine();
+
+                TypeWrite("Common techniques include:", botColor);
+                TypeWrite("- Creating a sense of urgency to bypass normal caution", botColor);
+                TypeWrite("- Impersonating authority figures to gain compliance", botColor);
+                TypeWrite("- Using flattery or building false rapport", botColor);
+                TypeWrite("- Exploiting people's natural desire to be helpful", botColor);
+
+                Console.WriteLine("\n" + new string('-', 60));
+                TypeWrite("The best defense is awareness and healthy skepticism.", warningColor);
+            }
+
+            if (isFavourite)
+            {
+                TypeWrite("Great! I'll remember that this is your favourite topic!", botColor);
+            }
+
+            Console.WriteLine("\n" + new string('=', 97) + "\n");
+            Console.ForegroundColor = defaultColor;
+        }
+
+        private static void DisplayMalwareProtectionInfo(string input)
+        {
+            Console.ForegroundColor = botColor;
+            Console.WriteLine("\n" + new string('=', 37) + " MALWARE PROTECTION " + new string('=', 37) + "\n");
+            TypeWrite(GetRandomResponse(malwareResponses), botColor);
+
+            if (isWorried)
+            {
+                TypeWrite("While malware is a real threat, following good practices greatly reduces your risk!", positiveColor);
+                TypeWrite("Would you like more detailed information about malware protection?", botColor);
+
+                if (input.ToLower().Contains("yes"))
+                {
+                    Console.ForegroundColor = botColor;
+                    Console.WriteLine("\n" + new string('=', 37) + " MALWARE PROTECTION " + new string('=', 37) + "\n");
+
+                    TypeWrite("Common types of malware:", botColor);
+                    Console.WriteLine();
+
+                    TypeWrite("1. VIRUSES: Self-replicating programs that infect other files", botColor);
+                    TypeWrite("2. WORMS: Spread through networks without user interaction", botColor);
+                    TypeWrite("3. TROJANS: Malware disguised as legitimate software", botColor);
+                    TypeWrite("4. RANSOMWARE: Encrypts files and demands payment", botColor);
+                    TypeWrite("5. SPYWARE: Secretly monitors user activity", botColor);
+                    TypeWrite("6. ADWARE: Displays unwanted advertisements", botColor);
+
+                    Console.WriteLine("\n" + new string('-', 60));
+                    TypeWrite("Essential protection measures:", botColor);
+                    TypeWrite("- Keep all software updated with the latest patches", botColor);
+                    TypeWrite("- Use reputable antivirus/anti-malware software", botColor);
+                    TypeWrite("- Be extremely cautious with email attachments", botColor);
+                    TypeWrite("- Regular backups can save you from ransomware", warningColor);
+                }
+            }
+
+            if (isCurious)
+            {
+                Console.ForegroundColor = botColor;
+                Console.WriteLine("\n" + new string('=', 37) + " MALWARE PROTECTION " + new string('=', 37) + "\n");
+
+                TypeWrite("Malware can enter your system through:", botColor);
+                Console.WriteLine();
+
+                TypeWrite("- Email attachments from unknown senders", botColor);
+                TypeWrite("- Downloaded files from untrustworthy sites", botColor);
+                TypeWrite("- Infected USB drives or external devices", botColor);
+                TypeWrite("- Exploiting vulnerabilities in outdated software", botColor);
+                TypeWrite("- Bundled with seemingly legitimate software", botColor);
+
+                Console.WriteLine("\n" + new string('-', 60));
+                TypeWrite("Prevention is better than cure when it comes to malware!", warningColor);
+            }
+            if (isFavourite)
+            {
+                TypeWrite("Great! I'll remember that this is your favourite topic!", botColor);
+            }
+
+            Console.WriteLine("\n" + new string('=', 97) + "\n");
+            Console.ForegroundColor = defaultColor;
+        }
+
         private static void PlayWelcomeAudio()
         {
             try
