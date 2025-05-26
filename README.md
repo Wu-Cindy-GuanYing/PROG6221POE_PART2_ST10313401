@@ -5,6 +5,10 @@ GitHub: https://github.com/Wu-Cindy-GuanYing/PROG6221POE_PART2_ST10313401.git
 
 Purpose of application: To allow users to ask the chatbot about topics related to cubersecurity. 
 
+*Topics added to the chatbot to enhance usage:
+- Social engineering
+- Malware
+
 App updated to have the below functionalities:
 - keyword recoginition
 - random responses
